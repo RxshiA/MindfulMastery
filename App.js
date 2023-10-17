@@ -4,6 +4,7 @@ import OnboardScreen from './screens/OnboardScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import HomeScreen from './screens/Home/HomeScreen';
+import SleepTimer from './screens/Home/SleepTimer';
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { FIREBASE_AUTH } from './FirebaseConfig';
@@ -14,8 +15,10 @@ const InsideStack = createNativeStackNavigator();
 
 function InsideLayout(){
   return (
-    <InsideStack.Navigator>
+    <InsideStack.Navigator
+      screenOptions={{headerShown: false}}>
       <InsideStack.Screen name='Home' component={HomeScreen}/>
+      <InsideStack.Screen name='SleepTimer' component={SleepTimer}/>
     </InsideStack.Navigator>
   )
 }

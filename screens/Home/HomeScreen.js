@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
+import SideNavigation from '../../components/SideNavigation';
 import {
   View,
   Text,
@@ -24,8 +26,11 @@ import {
 } from 'firebase/firestore';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import Toast from 'react-native-toast-message';
+import { useNavigation, NavigationContainer } from '@react-navigation/native';
+import MusicScreen from './MusicScreen';
+import SleepScreen from './SleepScreen';
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreenContent = ({ navigation }) => {
   const [schedule, setSchedule] = useState([]);
   const [newScheduleItem, setNewScheduleItem] = useState({
     fromTime: '',
@@ -467,6 +472,23 @@ const HomeScreen = ({ navigation }) => {
       {/* Meditation Day Picker */}
       {renderMeditationQuestions()}
     </View>
+  );
+};
+
+const Drawer = createDrawerNavigator();
+
+const HomeScreen = () => {
+  const navigation = useNavigation();
+
+  return (
+    <Drawer.Navigator
+      initialRouteName="Home"
+      drawerContent={(props) => <SideNavigation {...props} />}
+    >
+      <Drawer.Screen name="Home" component={HomeScreenContent} />
+      <Drawer.Screen name="Music" component={MusicScreen} />
+      <Drawer.Screen name="Sleep" component={SleepScreen} />
+    </Drawer.Navigator>
   );
 };
 
