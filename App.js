@@ -7,6 +7,7 @@ import HomeScreen from './screens/Home/HomeScreen';
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { FIREBASE_AUTH } from './FirebaseConfig';
+import Toast from 'react-native-toast-message';
 
 const Stack = createNativeStackNavigator();
 const InsideStack = createNativeStackNavigator();
@@ -42,6 +43,7 @@ export default function App() {
         }
         
       </Stack.Navigator>
+      <Toast ref={(ref) => Toast.setRef(ref)} />
     </NavigationContainer>
   );
 }
