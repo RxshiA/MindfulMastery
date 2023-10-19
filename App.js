@@ -5,6 +5,12 @@ import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import HomeScreen from './screens/Home/HomeScreen';
 import SleepTimer from './screens/Home/SleepTimer';
+import PsychologistHelp from './screens/SeekHelp/PsychologistHelp';
+import Group from './screens/SeekHelp/Group';
+import Chat from './screens/SeekHelp/Chat';
+import NewJournal from './screens/Journal/NewJournal';
+import TranquilFinish from './screens/Tranquil/TranquilFinish';
+import TranquilMap from './screens/Tranquil/TranquilMap';
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { FIREBASE_AUTH } from './FirebaseConfig';
@@ -19,6 +25,12 @@ function InsideLayout(){
       screenOptions={{headerShown: false}}>
       <InsideStack.Screen name='Home' component={HomeScreen}/>
       <InsideStack.Screen name='SleepTimer' component={SleepTimer}/>
+      <InsideStack.Screen name='PsychologistHelp' component={PsychologistHelp}/>
+      <InsideStack.Screen name='Group' component={Group}/>
+      <InsideStack.Screen name='Chat' component={Chat}/>
+      <InsideStack.Screen name='NewJournal' component={NewJournal}/>
+      <InsideStack.Screen name='TranquilFinish' component={TranquilFinish}/>
+      <InsideStack.Screen name='TranquilMap' component={TranquilMap}/>
     </InsideStack.Navigator>
   )
 }

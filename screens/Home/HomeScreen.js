@@ -29,6 +29,11 @@ import Toast from 'react-native-toast-message';
 import { useNavigation, NavigationContainer } from '@react-navigation/native';
 import MusicScreen from './MusicScreen';
 import SleepScreen from './SleepScreen';
+import HelpHome from '../SeekHelp/HelpHome';
+import VisHome from '../Visualisations/VisHome';
+import JournalHome from '../Journal/JournalHome';
+import Pomodoro from '../Pomodoro/Pomodoro';
+import TranquilStart from '../Tranquil/TranquilStart';
 
 const HomeScreenContent = ({ navigation }) => {
   const [schedule, setSchedule] = useState([]);
@@ -488,6 +493,11 @@ const HomeScreen = () => {
       <Drawer.Screen name="Home" component={HomeScreenContent} />
       <Drawer.Screen name="Music" component={MusicScreen} />
       <Drawer.Screen name="Sleep" component={SleepScreen} />
+      <Drawer.Screen name="Help" component={HelpHome} />
+      <Drawer.Screen name="Visualisations" component={VisHome} />
+      <Drawer.Screen name="Journal" component={JournalHome} />
+      <Drawer.Screen name="Pomodoro" component={Pomodoro} />
+      <Drawer.Screen name="Tranquil" component={TranquilStart} />
     </Drawer.Navigator>
   );
 };
