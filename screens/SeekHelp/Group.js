@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, Modal, Linking } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Modal, Linking, StyleSheet, ScrollView } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getDoc, doc } from 'firebase/firestore';
 import { FIREBASE_DB } from '../../FirebaseConfig';
@@ -27,10 +27,8 @@ const Group = () => {
 
     const handleJoinChat = (action) => {
         if (action === 'whatsapp') {
-            // Use Linking to open WhatsApp URL
             Linking.openURL('https://web.whatsapp.com/');
         } else if (action === 'join') {
-            // Redirect to Chat page
             navigation.navigate('Chat');
         }
 
@@ -42,78 +40,84 @@ const Group = () => {
     };
 
     return (
-        <View>
+        <ScrollView>
             {/* Golden Rectangle Box */}
-            <View className='p-4 mt-4 bg-yellow-300 rounded'>
-                <View className='flex-row items-center mb-4'>
-                    <Image source={require('../../assets/group.jpeg')} className='w-12 h-12 rounded-full mr-4' />
-                    <Text className='text-2xl font-bold'>{groupDetails?.name}</Text>
+            <View style={{ padding: 16, marginTop: 55, backgroundColor: '#EBD18D', borderRadius: 8, marginHorizontal: 20, marginBottom: 20 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}>
+                    <Image source={require('../../assets/avatar_group.png')} style={{ width: 105, height: 50, marginRight: 16 }} />
+                    <Text style={{ fontFamily: 'AnekOdia-Bold', fontSize: 20 }}>{groupDetails?.name}</Text>
                 </View>
 
-                <Text className='mb-2'>
-                    Some sample sentences about mental health. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                <Text style={{ marginBottom: 8, fontFamily: 'Roboto-Regular' }}>
+                    This social accountability group is dedicated to heal your mind
                 </Text>
 
-                <Text className='mb-4'>Members: {groupDetails?.members}</Text>
+                <Text style={{ marginBottom: 16, fontFamily: 'Roboto-Bold' }}>Members: {groupDetails?.members}</Text>
 
                 <TouchableOpacity
-                    className='bg-blue-500 py-2 px-4 rounded'
+                    style={{ backgroundColor: '#C58BF2', paddingVertical: 8, paddingHorizontal: 16, borderRadius: 10 }}
                     onPress={handlePopup}
                 >
-                    <Text className='text-white font-bold'>Join Group</Text>
+                    <Text style={{ color: 'white', fontFamily: 'Popins-Regular' }}>Join Group</Text>
                 </TouchableOpacity>
             </View>
 
             {/* Next Sessions Section */}
-            <View className='mt-6'>
-                <Text className='text-2xl font-bold mb-4'>Next Sessions</Text>
+            <View style={{ marginTop: 24, marginHorizontal: 15 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}>
+                    <Text style={{ fontSize: 20, fontFamily: 'Popins-SemiBold' }}>Next Sessions</Text>
+                    <View style={{ marginLeft: 'auto', flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={{ backgroundColor: '#9DCEFF', borderRadius: 12, paddingHorizontal: 8, paddingVertical: 5 }}>
+                            <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Popins-Regular' }}>This month{' \u25BE'}</Text>
+                        </View>
+                    </View>
+                </View>
 
                 {/* Dummy Session Data */}
-                <View className='mb-4 p-4 bg-white rounded'>
-                    <Text className='text-base font-bold'>Session Title</Text>
-                    <Text className='text-gray-500'>Location: Some Place</Text>
-                    <Text className='text-gray-500'>By Dr. Someone</Text>
+                {[
+                    { title: 'Mindfulness Meditation', location: 'Zen Center', presenter: 'Dr. Calm' },
+                    { title: 'Coping with Stress', location: 'Wellness Hub', presenter: 'Dr. Serene' },
+                    { title: 'Positive Thinking Workshop', location: 'Joyful Place', presenter: 'Dr. Cheerful' },
+                    { title: 'Emotional Resilience Session', location: 'Resilience Center', presenter: 'Dr. Strong' },
+                ].map((session, index) => (
+                    <View key={index} style={{ marginBottom: 16, padding: 16, backgroundColor: 'white', borderRadius: 8 }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Image source={require('../../assets/Date.png')} style={{ width: 30, height: 30, marginRight: 16 }} />
+                            <View>
+                                <Text style={{ fontSize: 16, fontFamily: 'Popins-Medium' }}>{session.title}</Text>
+                                <Text style={{ fontSize: 12, fontFamily: 'Popins-Regular', color: '#7B6F72' }}>Location: {session.location}</Text>
+                                <Text style={{ fontSize: 12, fontFamily: 'Popins-Regular', color: '#7B6F72' }}>By {session.presenter}</Text>
+                            </View>
+                        </View>
+                        <Image source={require('../../assets/Reminders.png')} style={{ width: 24, height: 24 }} />
+                    </View>
                 </View>
+                ))}
 
-                <View className='mb-4 p-4 bg-white rounded'>
-                    <Text className='text-base font-bold'>Session Title</Text>
-                    <Text className='text-gray-500'>Location: Some Place</Text>
-                    <Text className='text-gray-500'>By Dr. Someone</Text>
-                </View>
 
-                <View className='mb-4 p-4 bg-white rounded'>
-                    <Text className='text-base font-bold'>Session Title</Text>
-                    <Text className='text-gray-500'>Location: Some Place</Text>
-                    <Text className='text-gray-500'>By Dr. Someone</Text>
-                </View>
-
-                <View className='mb-4 p-4 bg-white rounded'>
-                    <Text className='text-base font-bold'>Session Title</Text>
-                    <Text className='text-gray-500'>Location: Some Place</Text>
-                    <Text className='text-gray-500'>By Dr. Someone</Text>
-                </View>
             </View>
+
 
             {isJoinChatPopupVisible && (
                 <>
-                    <View className='fixed inset-0 bg-black bg-opacity-50' onTouchEnd={() => setJoinGroupPopupVisible(false)}
-                        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: -200, backgroundColor: 'rgba(0, 0, 0, 0.5)' }} />
+                    <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0, 0, 0, 0.5)', marginBottom: -95 }} onTouchEnd={() => setJoinGroupPopupVisible(false)} />
                     <Modal transparent={true} visible={isJoinChatPopupVisible} onRequestClose={() => setJoinChatPopupVisible(false)}>
-                        <View className='flex-1 justify-center items-center'>
-                            <View className='bg-white p-4'>
-                                <Text className='text-2xl font-bold mb-4'>Join Chat</Text>
-                                <Text className='text-base mb-4'>Would you like to join the chat?</Text>
-                                <View className='flex-row justify-center'>
-                                    <TouchableOpacity style={{ marginRight: 8 }} className='bg-green-500 py-2 px-4 rounded' onPress={() => handleJoinChat('whatsapp')}>
-                                        <Text className='text-white font-bold'>Hop into WhatsApp</Text>
+                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                            <View style={{ backgroundColor: 'white', padding: 16, borderRadius: 15 }}>
+                                <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 16 }}>Join Chat</Text>
+                                <Text style={{ fontSize: 16, marginBottom: 16 }}>Would you like to join the chat?</Text>
+                                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                    <TouchableOpacity style={{ marginRight: 8, backgroundColor: '#4CAF50', paddingVertical: 8, paddingHorizontal: 16, borderRadius: 4 }} onPress={() => handleJoinChat('whatsapp')}>
+                                        <Text style={{ color: 'white', fontWeight: 'bold' }}>Hop into WhatsApp</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={{ marginLeft: 8 }} className='bg-blue-500 py-2 px-4 rounded' onPress={() => handleJoinChat('join')}>
-                                        <Text className='text-white font-bold'>Join Inside Chat</Text>
+                                    <TouchableOpacity style={{ marginLeft: 8, backgroundColor: '#2196F3', paddingVertical: 8, paddingHorizontal: 16, borderRadius: 4 }} onPress={() => handleJoinChat('join')}>
+                                        <Text style={{ color: 'white', fontWeight: 'bold' }}>Join Inside Chat</Text>
                                     </TouchableOpacity>
                                 </View>
-                                <View className='flex-row justify-center'>
-                                    <TouchableOpacity style={{ marginTop: 8 }} className='bg-gray-500 py-2 px-4 rounded' onPress={handlePopup}>
-                                        <Text className='text-white font-bold'>Cancel</Text>
+                                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                    <TouchableOpacity style={{ marginTop: 8, backgroundColor: '#888', paddingVertical: 8, paddingHorizontal: 16, borderRadius: 4 }} onPress={handlePopup}>
+                                        <Text style={{ color: 'white', fontWeight: 'bold' }}>Cancel</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -121,8 +125,8 @@ const Group = () => {
                     </Modal>
                 </>
             )}
+        </ScrollView>
 
-        </View>
     );
 };
 

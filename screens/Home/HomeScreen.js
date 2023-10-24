@@ -1,29 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import SideNavigation from '../../components/SideNavigation';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  Modal,
-  TextInput,
-} from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, Modal, TextInput, ScrollView, Image } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import {
-  FIREBASE_AUTH,
-  FIREBASE_DB
-} from '../../FirebaseConfig';
-import {
-  collection,
-  getDocs,
-  getDoc,
-  setDoc,
-  addDoc,
-  deleteDoc,
-  doc,
-  updateDoc
-} from 'firebase/firestore';
+import { FIREBASE_AUTH, FIREBASE_DB } from '../../FirebaseConfig';
+import { collection, getDocs, getDoc, setDoc, addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import Toast from 'react-native-toast-message';
 import { useNavigation, NavigationContainer } from '@react-navigation/native';
@@ -182,9 +163,9 @@ const HomeScreenContent = ({ navigation }) => {
         }}
       >
         <View style={{ flex: 1 }}>
-          <Text style={{ fontSize: 16 }}>{`${item.fromTime} - ${item.toTime}`}</Text>
-          <Text>{item.details}</Text>
-          <Text>{item.date}</Text>
+          <Text style={{ fontFamily: 'Epilogue-Regular', fontSize: 16 }}>{`${item.fromTime} - ${item.toTime}`}</Text>
+          <Text style={{ fontFamily: 'Epilogue-Bold', fontSize: 16 }}>{item.details}</Text>
+          <Text style={{ fontFamily: 'Epilogue-Medium', fontSize: 13, color: '#888888' }}>{item.date}</Text>
         </View>
         <TouchableOpacity onPress={() => deleteScheduleItem(item.id)}>
           <AntDesign name="delete" size={24} color="black" />
@@ -257,9 +238,9 @@ const HomeScreenContent = ({ navigation }) => {
   };
 
   const renderMeditationQuestions = () => (
-    <View>
+    <View style={{marginBottom: 50}}>
       {/* Meditation Time Question */}
-      <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>1. What time would you like to meditate?</Text>
+      <Text style={{ fontFamily: 'AnekOdia-Bold', fontSize: 24, marginBottom: 10 }}>1. What time would you like to meditate?</Text>
       <TouchableOpacity
         onPress={() => showMeditationTimePicker()}
         style={{
@@ -268,11 +249,12 @@ const HomeScreenContent = ({ navigation }) => {
         }}
       >
         {/* Display selected meditation time */}
-        <Text>{meditationDetails.meditationTime ? meditationDetails.meditationTime : 'Select Time'}</Text>
+        <Text style={{ fontFamily: 'AbhayaLibre-ExtraBold', color: '#A1A4B2' }}>{meditationDetails.meditationTime ? meditationDetails.meditationTime : 'Any time you can choose but We recommend first thing in the morning.'}</Text>
       </TouchableOpacity>
 
       {/* Meditation Day Question */}
-      <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10, marginTop: 20 }}>2. Which day(s) would you like to meditate?</Text>
+      <Text style={{ fontFamily: 'AnekOdia-Bold', fontSize: 24, marginTop: 20 }}>2. Which day(s) would you like to meditate?</Text>
+      <Text style={{ fontFamily: 'AbhayaLibre-ExtraBold', color: '#A1A4B2', fontSize: 14, marginBottom: 10 }}>Everyday is best, but we recommend picking at least five.</Text>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
           <TouchableOpacity
@@ -287,7 +269,7 @@ const HomeScreenContent = ({ navigation }) => {
               alignItems: 'center',
             }}
           >
-            <Text style={{ color: meditationDetails.meditationDays.includes(day) ? '#4CAF50' : 'black' }}>{day}</Text>
+            <Text style={{ fontFamily: 'AbhayaLibre-ExtraBold', color: meditationDetails.meditationDays.includes(day) ? '#4CAF50' : 'black' }}>{day}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -312,30 +294,34 @@ const HomeScreenContent = ({ navigation }) => {
   );
 
   return (
-    <View style={{ flex: 1, padding: 20 }}>
-      <View style={{ alignItems: 'center', marginBottom: 20 }}>
-        <Text style={{ fontSize: 24 }}>{username}</Text>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-          <MaterialIcons name="email" size={16} color="#888" style={{ marginRight: 5 }} />
-          <Text style={{ color: '#888' }}>{email}</Text>
+    <ScrollView style={{ flex: 1, padding: 20 }}>
+      <View style={{ flexDirection: 'column', alignItems: 'flex-start', marginTop: 10 }}>
+        <Text style={{ fontFamily: 'Popins-Regular', color: '#ADA4A5', fontSize: 12 }}>Welcome Back,</Text>
+        <Text style={{ fontFamily: 'Popins-Bold', color: '1D1617', fontSize: 20 }}>Rashi Amarasiri</Text>
+      </View>
+
+      <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20, marginBottom: 20 }}>
+        <Text style={{ fontFamily: 'Epilogue-Bold', color: '#555555', fontSize: 20 }}>Discover</Text>
+        <Text style={{ fontFamily: 'Epilogue-Bold', color: '#222222', fontSize: 32 }}>Your Inner Self</Text>
+      </View>
+
+      <Image
+        source={require('../../assets/Card.png')} 
+        style={{ width: '100%', height: 450, borderRadius: 15, marginBottom: 10 }}
+        resizeMode="cover"
+      />
+
+      <View style={{ backgroundColor: '#9DCEFF', borderRadius: 15, padding: 12, marginBottom: 20 }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Text style={{ fontFamily: 'Popins-Medium', fontSize: 16, color: '#1D1617', marginLeft: 15 }}>Today's Schedule</Text>
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
+            <MaterialIcons name="add-circle" size={40} color="#92A3FD" />
+          </TouchableOpacity>
         </View>
       </View>
 
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: 20,
-        }}
-      >
-        <Text style={{ fontSize: 20 }}>Today's Schedule</Text>
-        <TouchableOpacity onPress={() => setModalVisible(true)}>
-          <MaterialIcons name="add-circle" size={32} color="#2196F3" />
-        </TouchableOpacity>
-      </View>
 
-      <FlatList data={schedule} renderItem={renderItem} keyExtractor={(item) => item.id} style={{ marginBottom: 20 }} />
+      <FlatList data={schedule} renderItem={renderItem} keyExtractor={(item) => item.id} style={{ marginBottom: 40 }} />
 
       <Modal
         animationType="slide"
@@ -476,7 +462,7 @@ const HomeScreenContent = ({ navigation }) => {
 
       {/* Meditation Day Picker */}
       {renderMeditationQuestions()}
-    </View>
+    </ScrollView>
   );
 };
 

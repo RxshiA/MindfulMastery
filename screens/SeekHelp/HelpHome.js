@@ -53,69 +53,114 @@ const HelpHome = () => {
 
 
     return (
-        <View className='p-4 pt-24'>
-            <TouchableOpacity onPress={handlePopup}
-                className='absolute top-10 right-4'>
-                <Image source={require('../../assets/notification.png')} className='w-6 h-6' />
+        <ScrollView>
+            <View style={{ height: '15.5%', backgroundColor: 'lightblue', borderBottomLeftRadius: 20, borderBottomRightRadius: 20 }}>
+                <Text style={{ fontFamily: 'Popins-SemiBold', fontSize: 24, textAlign: 'center', backgroundColor: '#EEA4CE', marginVertical: 10, marginHorizontal: 120, borderRadius: 12, marginTop: 30, marginBottom: 8 }}>Seek Help</Text>
+            </View>
+
+            <TouchableOpacity onPress={handlePopup} style={{ position: 'absolute', top: 30, right: 7 }}>
+                <Image source={require('../../assets/notification.png')} style={{ width: 24, height: 24 }} />
             </TouchableOpacity>
+
             {/* Social Gatherings Section */}
-            <View className='mb-6'>
-                <Text className='text-2xl font-bold'>Social Gatherings</Text>
-                <Text className='text-gray-500 mb-2'>Near you</Text>
+            <View style={{ marginTop: 30, marginLeft: 20, marginRight: 15 }}>
+                <Text style={{ fontFamily: 'Roboto-Bold', fontSize: 29 }}>Social Gatherings</Text>
+                <Text style={{ fontFamily: 'Roboto-Regular', fontSize: 16, color: '#606060', marginBottom: 20 }}>Near you</Text>
 
                 {/* Gathering Details */}
                 {Array.from({ length: 4 }).map((_, index) => (
-                    <View key={index} className='flex-row items-center mb-2'>
+                    <View key={index} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 15 }}>
                         <Image source={require('../../assets/roundedPicture.jpeg')} className='w-12 h-12 rounded-full mr-2' />
                         <View className='flex-1'>
-                            <Text className='text-base'>Place: London</Text>
-                            <Text className='text-gray-500'>By Dr. Hank</Text>
+                            <Text style={{ fontFamily: 'Roboto-Medium', fontSize: 15 }}>Place: London</Text>
+                            <Text style={{ fontFamily: 'Roboto-Regular', fontSize: 13, color: '#78858F' }}>By Dr. Hank</Text>
                         </View>
-                        <TouchableOpacity className={`bg-pink-500 py-1 px-2 rounded ${followStatus[index] && 'bg-silver'}`} onPress={() => handleFollow(index)}>
-                            <Text className='text-white font-bold'>{followStatus[index] ? 'Followed' : 'Follow'}</Text>
+                        <TouchableOpacity
+                            style={{
+                                backgroundColor: '#C223EA',
+                                paddingVertical: 1,
+                                paddingHorizontal: 2,
+                                backgroundColor: followStatus[index] ? '#EEA4CE' : '#C223EA',
+                                paddingHorizontal: 10,
+                                paddingVertical: 5,
+                                borderRadius: 5,
+                            }}
+                            onPress={() => handleFollow(index)}
+                        >
+                            <Text style={{ color: '#fff', fontWeight: 'bold' }}>
+                                {followStatus[index] ? 'Followed' : 'Follow'}
+                            </Text>
                         </TouchableOpacity>
+
                     </View>
                 ))}
             </View>
 
             {/* Groups to Join Section */}
-            <View className='mb-6'>
-                <Text className='text-2xl font-bold'>Groups to Join</Text>
+            <View style={{ marginTop: 30, marginLeft: 20, marginRight: 15, marginBottom: 50 }}>
+                <Text style={{ fontSize: 20, fontFamily: 'Popins-SemiBold' }}>Groups to Join</Text>
 
-                {/* Group Details */}
-                {groups.map((group) => (
-                    <TouchableOpacity
-                        key={group.id}
-                        className='mb-2 p-2 border border-gray-300 rounded'
-                        onPress={() => handleGroupClick(group)}
-                    >
-                        {/* Group Details */}
-                        <Text className='text-base font-bold'>{group.name}</Text>
-                        <Text className='text-gray-500'>Members: {group.members}</Text>
-                    </TouchableOpacity>
-
-                ))}
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 110 }}>
+                    {groups.map((group) => (
+                        <TouchableOpacity
+                            key={group.id}
+                            style={{
+                                marginRight: 15,
+                                padding: 10,
+                                borderWidth: 2,
+                                borderRadius: 4,
+                            }}
+                            onPress={() => handleGroupClick(group)}
+                        >
+                            {/* Group Details */}
+                            <Text style={{ fontSize: 14, fontFamily: 'Popins-Medium' }}>{group.name}</Text>
+                            <Text style={{ color: '#888' }}>Members: {group.members}</Text>
+                        </TouchableOpacity>
+                    ))}
+                </ScrollView>
             </View>
+
 
             {isJoinGroupPopupVisible && (
                 <>
-                    <View className='fixed inset-0 bg-black bg-opacity-50' onTouchEnd={() => setJoinGroupPopupVisible(false)} 
-                    style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: -200, backgroundColor: 'rgba(0, 0, 0, 0.5)' }}/>
+                    <View onTouchEnd={() => setJoinGroupPopupVisible(false)}
+                        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: -200, backgroundColor: 'rgba(0, 0, 0, 0.5)' }} />
                     <Modal transparent={true} visible={isJoinGroupPopupVisible} onRequestClose={() => setJoinGroupPopupVisible(false)}>
                         <View className='flex-1 justify-center items-center'>
-                            <View className='bg-white p-4'>
+                            <View className='bg-white p-4' style={{ borderRadius: 10 }}>
                                 {selectedGroup && (
                                     <>
                                         <Text className='text-2xl font-bold mb-4'>{`Join ${selectedGroup.name}`}</Text>
                                         <Text className='text-base mb-4'>By joining this group, you’ll accept all of their rules.</Text>
-                                        <View className='flex-row justify-between'>
-                                            <TouchableOpacity className='bg-blue-500 py-2 px-4 rounded' onPress={handleJoinGroup}>
-                                                <Text className='text-white font-bold'>Yes</Text>
+                                        <View style={{ flexDirection: 'row' }}>
+                                            <TouchableOpacity
+                                                style={{
+                                                    backgroundColor: '#272829', // Assuming 'bg-blue-500' corresponds to blue-500
+                                                    paddingVertical: 3,
+                                                    paddingHorizontal: 15,
+                                                    borderRadius: 4,
+                                                    marginRight: 10,
+                                                }}
+                                                onPress={handleJoinGroup}
+                                            >
+                                                <Text style={{ color: 'white', fontFamily: 'Roboto-Bold' }}>Accept</Text>
                                             </TouchableOpacity>
-                                            <TouchableOpacity className='bg-gray-500 py-2 px-4 rounded' onPress={() => setJoinGroupPopupVisible(false)}>
-                                                <Text className='text-white font-bold'>Cancel</Text>
+
+                                            <TouchableOpacity
+                                                style={{
+                                                    backgroundColor: 'white', // Assuming 'bg-gray-500' corresponds to gray-500
+                                                    paddingVertical: 2,
+                                                    paddingHorizontal: 12,
+                                                    borderRadius: 4,
+                                                    borderWidth: 1,
+                                                    borderColor: '#000',
+                                                }}
+                                                onPress={() => setJoinGroupPopupVisible(false)}
+                                            >
+                                                <Text style={{ color: '#272829', fontFamily: 'Roboto-Bold' }}>Cancel</Text>
                                             </TouchableOpacity>
                                         </View>
+
                                     </>
                                 )}
                             </View>
@@ -129,22 +174,39 @@ const HelpHome = () => {
 
             <Modal transparent={true} visible={isPopupVisible} onRequestClose={handlePopup}>
                 <View className='flex-1 justify-center items-center'>
-                    <View className='bg-white p-4'>
-                        <Text className='text-2xl font-bold mb-4'>Pop UP!!!!!</Text>
-                        <Text className='text-base mb-4'>For the past month, your mental health isn't being great. Do you want to seek help from a specialist?</Text>
-                        <View className='flex-row justify-between'>
-                            <TouchableOpacity className='bg-blue-500 py-2 px-4 rounded' onPress={handleOkay}>
-                                <Text className='text-white font-bold'>Okay</Text>
+                    <View style={{ backgroundColor: 'white', borderRadius: 10, padding: 20 }}>
+                        <Text style={{ marginHorizontal: 5, marginVertical: 5, fontFamily: 'Roboto-Bold', fontSize: 22 }}>Pop UP!!!!!</Text>
+                        <Text style={{ fontFamily: 'Roboto-Regular', fontSize: 15, marginVertical:15 }}>For the past month, your mental health isn't being great. Do you want to seek help from a specialist?</Text>
+                        <View style={{ flexDirection: 'row' }}>
+                            <TouchableOpacity
+                                style={{
+                                    backgroundColor: '#272829', // Assuming 'bg-blue-500' corresponds to blue-500
+                                    paddingVertical: 3,
+                                    paddingHorizontal: 15,
+                                    borderRadius: 4,
+                                    marginRight: 10,
+                                }}
+                                onPress={handleOkay}>
+                                <Text style={{ color: 'white', fontFamily: 'Roboto-Bold' }}>Okay</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity className='bg-gray-500 py-2 px-4 rounded' onPress={handlePopup}>
-                                <Text className='text-white font-bold'>Cancel</Text>
+                            <TouchableOpacity
+                                style={{
+                                    backgroundColor: 'white', // Assuming 'bg-gray-500' corresponds to gray-500
+                                    paddingVertical: 2,
+                                    paddingHorizontal: 12,
+                                    borderRadius: 4,
+                                    borderWidth: 1,
+                                    borderColor: '#000',
+                                }} 
+                                onPress={handlePopup}>
+                                <Text style={{ color: '#272829', fontFamily: 'Roboto-Bold' }}>Cancel</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                 </View>
             </Modal>
 
-        </View>
+        </ScrollView>
     );
 };
 

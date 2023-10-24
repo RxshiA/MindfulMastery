@@ -1,38 +1,64 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { View, Text, Image, TouchableOpacity, ImageBackground, StyleSheet } from 'react-native';
+import React from 'react';
 
-const OnboardScreen = ({navigation}) => {
+const OnboardScreen = ({ navigation }) => {
   return (
-    <View className='flex-1 items-center justify-center bg-blue-200'>
-      <Image
-        source={require('../assets/favicon.png')}
-        className='mb-8'
-      />
-      <Text className='text-3xl font-bold mb-4 text-center'>
-        Welcome to Mindful Mastery
-      </Text>
-      <Text className='text-gray-700 text-center mb-8'>
-        Elevate your focus, achieve more, and find balance in your daily life.
-      </Text>
-
-      <TouchableOpacity
-        className='bg-green-500 py-3 px-6 rounded-full mb-4'
-        onPress={() => navigation.navigate('Register')}
+    <View style={{ flex: 1 }}>
+      <ImageBackground
+        source={require('../assets/mainBackground.png')}
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+        }}
       >
-        <Text className='text-white font-bold text-lg'>
-          Get Started
-        </Text>
-      </TouchableOpacity>
+        <View style={styles.absoluteContainer}>
+          <ImageBackground
+            source={require('../assets/BackgroundSplash.png')}
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              paddingBottom: 50,
+              width: '100%',
+            }}
+          >
+            <Text style={{ fontFamily: 'Sora-SemiBold', fontSize: 36, marginBottom: 4, color: 'white', textAlign: 'center' }}>
+              The first and best {'\n'} victory is to {'\n'} conquer self
+            </Text>
+            <Text style={{ fontFamily: 'Sora-Regular', fontSize: 16, color: '#A9A9A9', textAlign: 'center', marginBottom: 8 }}>
+              Begin your mindfulness journey today, {'\n'}not tomorrow 
+            </Text>
 
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Login')}
-        className='flex-row items-center'
-      >
-        <Text className='text-gray-600 mr-2'>Already have an account?</Text>
-        <Text className='text-blue-500 font-bold'>Log in</Text>
-      </TouchableOpacity>
+            <TouchableOpacity
+              style={{ backgroundColor: '#C67C4E', paddingVertical: 12, paddingHorizontal: 24, borderRadius: 14, marginBottom: 4, width: '80%', height: '15%', alignItems: 'center' }}
+              onPress={() => navigation.navigate('Register')}
+            >
+              <Text style={{ fontFamily: 'Sora-SemiBold', fontSize: 16, color: '#fff' }}>
+                Get Started
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Login')}
+              style={{ flexDirection: 'row', alignItems: 'center' }}
+            >
+              <Text style={{ fontFamily: 'Sora-Regular', color: '#A9A9A9', marginRight: 8 }}>Already have an account?</Text>
+              <Text style={{ fontFamily: 'Sora-Regular', color: '#007BFF' }}>Log in</Text>
+            </TouchableOpacity>
+          </ImageBackground>
+        </View>
+      </ImageBackground>
     </View>
-  )
+  );
 }
 
-export default OnboardScreen
+const styles = StyleSheet.create({
+  absoluteContainer: {
+    ...StyleSheet.absoluteFillObject,
+    top: '50%', 
+  },
+});
+
+export default OnboardScreen;

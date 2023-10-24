@@ -37,12 +37,15 @@ const VisHome = () => {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+      {/* Title */}
+      <Text style={{ fontSize: 24, fontFamily: 'AbhayaLibre-ExtraBold', marginBottom: 20 }}>Progress</Text>
+
       {/* Images with Spacing */}
       <View style={styles.imageContainer}>
-        <Image source={require('../../assets/Bar_chart.png')} style={styles.image} />
+        <Image source={require('../../assets/card1.png')} />
       </View>
       <View style={styles.imageContainer}>
-        <Image source={require('../../assets/Pie_chart.png')} style={styles.image} />
+        <Image source={require('../../assets/card2.png')} />
       </View>
 
       {/* Modal for Adding Emotions */}
@@ -54,48 +57,50 @@ const VisHome = () => {
           setModalVisible(!modalVisible);
         }}
       >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Today's Emotions</Text>
+        <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0, 0, 0, 0.5)', marginBottom: -95 }}>
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ backgroundColor: 'white', padding: 26, borderRadius: 15}}>
+              <Text style={styles.modalTitle}>Today's Emotions</Text>
 
-            {/* Date Input */}
-            <TextInput
-              placeholder="Date"
-              style={styles.input}
-              value={selectedDate}
-              onChangeText={(text) => setSelectedDate(text)}
-            />
+              {/* Date Input */}
+              <TextInput
+                placeholder="Date"
+                style={styles.input}
+                value={selectedDate}
+                onChangeText={(text) => setSelectedDate(text)}
+              />
 
-            {/* Emotion Input */}
-            <Text style={styles.label}>Emotion:</Text>
-            <Picker
-              selectedValue={selectedEmotion}
-              onValueChange={(itemValue, itemIndex) => setSelectedEmotion(itemValue)}
-              style={styles.picker}
-            >
-              {emotionsList.map((emotion, index) => (
-                <Picker.Item key={index} label={emotion} value={emotion} />
-              ))}
-            </Picker>
+              {/* Emotion Input */}
+              <Text style={styles.label}>Emotion:</Text>
+              <Picker
+                selectedValue={selectedEmotion}
+                onValueChange={(itemValue, itemIndex) => setSelectedEmotion(itemValue)}
+                style={styles.picker}
+              >
+                {emotionsList.map((emotion, index) => (
+                  <Picker.Item key={index} label={emotion} value={emotion} />
+                ))}
+              </Picker>
 
-            {/* Emotion Value Input */}
-            <Text style={styles.label}>Value:</Text>
-            <TextInput
-              placeholder="0-10"
-              keyboardType="numeric"
-              style={styles.input}
-              value={emotionValue.toString()}
-              onChangeText={(text) => setEmotionValue(parseInt(text) || 0)}
-            />
+              {/* Emotion Value Input */}
+              <Text style={styles.label}>Value:</Text>
+              <TextInput
+                placeholder="0-10"
+                keyboardType="numeric"
+                style={styles.input}
+                value={emotionValue.toString()}
+                onChangeText={(text) => setEmotionValue(parseInt(text) || 0)}
+              />
 
-            {/* Save and Cancel Buttons */}
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.saveButton} onPress={handleSaveEmotions}>
-                <Text style={styles.buttonText}>Save</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.cancelButton} onPress={handleCancelEmotions}>
-                <Text style={styles.buttonText}>Cancel</Text>
-              </TouchableOpacity>
+              {/* Save and Cancel Buttons */}
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.saveButton} onPress={handleSaveEmotions}>
+                  <Text style={styles.buttonText}>Save</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.cancelButton} onPress={handleCancelEmotions}>
+                  <Text style={styles.buttonText}>Cancel</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>
@@ -119,11 +124,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   imageContainer: {
-    marginBottom: 20,
-  },
-  image: {
-    width: 400,
-    height: 310,
+    marginBottom: 40,
   },
   modalContainer: {
     flex: 1,
@@ -171,10 +172,11 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   addButton: {
-    backgroundColor: 'blue',
+    backgroundColor: 'black',
     padding: 15,
     borderRadius: 5,
     margin: 20,
+    paddingHorizontal: 110
   },
   buttonText: {
     color: 'white',

@@ -2,88 +2,42 @@ import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 
 const TranquilStart = ({ navigation }) => {
-  const [selectedWords, setSelectedWords] = useState([]);
-  const [inputText, setInputText] = useState('');
-  const meditationPlaces = ['Park', 'Coffee Shop', 'Yoga Center', 'Temple', 'Church', 'Mall'];
-
-  const handleToggleSelection = (word) => {
-    setSelectedWords((prevSelected) => {
-      if (prevSelected.includes(word)) {
-        return prevSelected.filter((selectedWord) => selectedWord !== word);
-      } else {
-        return [...prevSelected, word];
-      }
-    });
-  };
 
   const handleGetStarted = () => {
-    navigation.navigate('TranquilFinish');
+    navigation.navigate('TranquilMiddle');
   };
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: 'center', padding: 16 }}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', padding: 16 }}>
       {/* Blue Slider with Circle at 0th Position */}
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}>
-        <View style={{ height: 4, width: '100%', backgroundColor: 'black' }} />
-        <View style={{ height: 12, width: 12, backgroundColor: 'blue', borderRadius: 6, position: 'absolute', left: 40 }} />
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 16 }}>
+        <View style={{ height: 2, width: '100%', backgroundColor: 'black' }} />
+        <View style={{ height: 12, width: 12, backgroundColor: '#3D8DFF', borderRadius: 6, position: 'absolute', left: 40 }} />
+        <View style={{ height: 12, width: 12, backgroundColor: '#CED6DF', borderRadius: 6, position: 'absolute', right: 187 }} />
+        <View style={{ height: 12, width: 12, backgroundColor: '#CED6DF', borderRadius: 6, position: 'absolute', right: 40 }} />
       </View>
 
       {/* Heading */}
-      <Text style={{ color: '#38a69d', fontSize: 24, fontWeight: 'bold', marginBottom: 16 }}>Tour to Tranquil</Text>
+      <Text style={{ color: '#38a69d', fontSize: 24, fontFamily: 'Archivo-SemiBold', marginVertical: 16 }}>Tour to Tranquil</Text>
 
       {/* Image */}
-      <Image source={require('../../assets/tranquil.jpeg')} style={{ width: 200, height: 200, borderRadius: 8, marginBottom: 16 }} />
+      <Image source={require('../../assets/tranquilMail.png')} style={{ width: 200, height: 200, borderRadius: 8, marginVertical: 16 }} />
 
-      {/* First Question with Writable Blank Boxes */}
-      <Text style={{ textAlign: 'center', marginBottom: 16 }}>
-        What are the first words that pop into your head when you think of <Text className='text-blue-600'>tranquil?</Text>
+      <View>
+        <Text style={{ textAlign: 'left',marginTop: 50, fontFamily: 'KantumruyPro-Regular', fontSize: 16 }}>
+          Discover your next <Text style={{ color: '#5F97FF' }}>Tranquil</Text> via our app. This will be the upgrade of your mental health.
+        </Text>
+        <Text style={{ marginBottom: 16, fontFamily: 'KantumruyPro-Regular', fontSize: 15, color: '#748393' }}>
+          We will provide you the locations for your mindfulness gain
+        </Text>
+      </View>
+
+
+      <Text style={{ marginTop:90, marginBottom:10, color: '#5F97FF', fontFamily: 'Archivo-SemiBold', fontSize: 16 }}>
+        Remind Me Later
       </Text>
-      <View style={{ flexDirection: 'row', marginBottom: 24 }}>
-        {/* Three Writable Blank Boxes */}
-        {[1, 2, 3].map((index) => (
-          <TextInput
-          placeholder='Enter Word'
-            key={index}
-            style={{
-              backgroundColor: 'white',
-              height: 30,
-              width: 100,
-              marginHorizontal: 8,
-              borderRadius: 8,
-              textAlign: 'center',
-              placeholderTextColor: 'gray'
-            }}
-            onChangeText={(text) => {
-              // You can handle the input text as needed
-              setInputText(text);
-            }}
-          />
-        ))}
-      </View>
-
-      {/* Second Question */}
-      <Text style={{ textAlign: 'center', marginBottom: 16 }}>Select each word that is a place for meditation</Text>
-
-      {/* Meditation Places Buttons */}
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', marginBottom: 24 }}>
-        {meditationPlaces.map((place) => (
-          <TouchableOpacity
-            key={place}
-            onPress={() => handleToggleSelection(place)}
-            style={{
-              backgroundColor: selectedWords.includes(place) ? '#759694' : '#303b3a',
-              padding: 10,
-              margin: 8,
-              borderRadius: 8,
-            }}
-          >
-            <Text style={{ color: 'white' }}>{place}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-
       {/* Get Started Button */}
-      <TouchableOpacity onPress={handleGetStarted} style={{ backgroundColor: 'black', padding: 16, borderRadius: 8 }}>
+      <TouchableOpacity onPress={handleGetStarted} style={{ backgroundColor: '#202832', paddingHorizontal: 136, paddingVertical:16, borderRadius: 8}}>
         <Text style={{ color: 'white', fontSize: 18 }}>Get Started</Text>
       </TouchableOpacity>
     </ScrollView>

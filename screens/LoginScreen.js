@@ -28,16 +28,19 @@ const LoginScreen = ({navigation}) => {
             source={require('../assets/favicon.png')}
             className='mb-8'
         />
-        <Text className='text-3xl font-bold mb-4 text-center'>
-            Welcome Back!
-        </Text>
+        <Text style={{ fontFamily: 'Popins-Regular', fontSize: 20 }}>
+                Hey There,
+            </Text>
+            <Text style={{ fontFamily: 'Popins-Bold', fontSize: 24, marginBottom: 24 }}>
+                Welcome Back
+            </Text>
 
             <TextInput
                 value={email}
                 placeholder="Email"
                 autoCapitalize='none'
                 onChangeText={text => setEmail(text)}
-                className='bg-white w-3/4 mb-4 p-3 rounded-full'
+                style={{ fontFamily: 'Popins-Regular', backgroundColor: 'white', width: '75%', marginBottom: 8, padding: 12, borderRadius: 15 }}
             />
             <TextInput
                 value={password}
@@ -45,14 +48,21 @@ const LoginScreen = ({navigation}) => {
                 autoCapitalize='none'
                 secureTextEntry
                 onChangeText={text => setPassword(text)}
-                className='bg-white w-3/4 mb-8 p-3 rounded-full'
+                style={{ fontFamily: 'Popins-Regular', backgroundColor: 'white', width: '75%', marginBottom: 8, padding: 12, borderRadius: 15 }}
             />
 
             <TouchableOpacity
-                className='bg-green-500 py-3 px-6 rounded-full mb-4'
+                style={{
+                    backgroundColor: '#9DCEFF',
+                    paddingVertical: 16,
+                    paddingHorizontal: 24,
+                    borderRadius: 20,
+                    marginBottom: 16,
+                    marginTop: 16,
+                }}                
                 onPress={signIn}
             >
-                <Text className='text-white font-bold text-lg'>Log In</Text>
+                <Text Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18 }}>Log In</Text>
             </TouchableOpacity>
 
             <TouchableOpacity

@@ -4,8 +4,8 @@ import MapView, { Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
 
 const TranquilMap = () => {
-    const navigation = useNavigation();
-    const [selectedTranquil, setSelectedTranquil] = useState(null);
+  const navigation = useNavigation();
+  const [selectedTranquil, setSelectedTranquil] = useState(null);
   const [searchText, setSearchText] = useState('');
   const [tranquils] = useState([
     { id: 1, name: "St. Smith's Park", hours: '24 Hrs', address: '123 Main St, Colombo 01', location: { latitude: 6.8871, longitude: 79.8612 } },
@@ -19,8 +19,8 @@ const TranquilMap = () => {
     { id: 9, name: 'Zen Temple', hours: '24 Hrs', address: '606 Maple St, Colombo 09', location: { latitude: 6.8771, longitude: 79.8668 } },
     { id: 10, name: 'Ave Maria Church', hours: '24 Hrs', address: '707 Birch St, Colombo 10', location: { latitude: 6.8971, longitude: 79.8671 } },
   ]);
-  
-  
+
+
 
   const handleSearch = () => {
     const result = tranquils.filter((tranquil) =>
@@ -28,33 +28,26 @@ const TranquilMap = () => {
     );
   };
 
+  const handleBackButton = () => {
+    navigation.navigate('Home');
+  };
+
   const handleMarkerPress = (tranquil) => {
     setSelectedTranquil(tranquil);
   };
 
   return (
-    <View className='flex-1 p-4 pt-16'>
+    <View style={{ flex: 1 }}>
       {/* Back Button */}
-      <TouchableOpacity onPress={() => navigation.reset({ index: 0, routes: [{ name: 'Home' }] })} style={{ position: 'absolute', top: 46, left: 26, zIndex: 12 }}>
-        <Image source={require('../../assets/back.png')} style={{ width: 44, height: 44 }} />
+      <TouchableOpacity
+        style={{ position: 'absolute', top: 20, left: 20, zIndex: 1 }}
+        onPress={handleBackButton}
+      >
+        <Image source={require('../../assets/back.png')} style={{ width: 50, height: 50 }} />
       </TouchableOpacity>
 
-      {/* Rest of the code remains unchanged */}
-      <Text className='text-2xl mb-7 text-center font-medium'>Mindful Places {'\n'} generated for you</Text>
-      {/* ... (rest of the code) */}
-
-      
-      {/* Search Input */}
-      <TextInput
-        className='h-12 border border-gray-300 mb-4 px-4'
-        placeholder="Search Tranquils"
-        value={searchText}
-        onChangeText={(text) => setSearchText(text)}
-      />
-      <Button title="Search" onPress={handleSearch} />
-
       {/* Map */}
-      <MapView className='flex-1 mb-4' initialRegion={{ latitude: 6.9271, longitude: 79.8612, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }}>
+      <MapView style={{ flex: 1 }} initialRegion={{ latitude: 6.9271, longitude: 79.8612, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }}>
         {tranquils.map((tranquil) => (
           <Marker
             key={tranquil.id}
@@ -65,13 +58,36 @@ const TranquilMap = () => {
         ))}
       </MapView>
 
+      <Text style={{ position: 'absolute', top: 30, left: 0, right: 0, textAlign: 'center', fontFamily: 'Popins-Bold', fontSize: 20 }}>
+        Mindful Places {'\n'} Generated For You
+      </Text>
+
+      {/* Search Input */}
+      <View style={{ position: 'absolute', top: 100, left: 0, right: 0, alignItems: 'center' }}>
+        <TextInput
+          style={{
+            height: 40,
+            borderColor: 'gray',
+            borderWidth: 1,
+            borderRadius: 100,
+            paddingHorizontal: 10,
+            backgroundColor: 'white',
+            width: '85%'
+          }}
+          placeholder="Try coffee, temples, parks..."
+          value={searchText}
+          onChangeText={(text) => setSearchText(text)}
+          onSubmitEditing={handleSearch}
+        />
+      </View>
+
       {/* Selected Tranquil Details */}
       {selectedTranquil && (
-        <View className='bg-white p-4 rounded-lg shadow'>
-          <Text className='text-2xl font-bold mb-2'>Selected Place</Text>
+        <View style={{ backgroundColor: 'white', padding: 16, borderRadius: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5 }}>
+        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 8 }}>Selected Place</Text>
           <Text>Name: {selectedTranquil.name}</Text>
-            <Text>Open Hours: {selectedTranquil.hours}</Text>
-            <Text>Address: {selectedTranquil.address}</Text>
+          <Text>Open Hours: {selectedTranquil.hours}</Text>
+          <Text>Address: {selectedTranquil.address}</Text>
           {/* Add more details as needed */}
         </View>
       )}
