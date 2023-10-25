@@ -51,7 +51,6 @@ const HelpHome = () => {
         handlePopup();
     };
 
-
     return (
         <ScrollView>
             <View style={{ height: '15.5%', backgroundColor: 'lightblue', borderBottomLeftRadius: 20, borderBottomRightRadius: 20 }}>
@@ -120,7 +119,6 @@ const HelpHome = () => {
                 </ScrollView>
             </View>
 
-
             {isJoinGroupPopupVisible && (
                 <>
                     <View onTouchEnd={() => setJoinGroupPopupVisible(false)}
@@ -145,7 +143,6 @@ const HelpHome = () => {
                                             >
                                                 <Text style={{ color: 'white', fontFamily: 'Roboto-Bold' }}>Accept</Text>
                                             </TouchableOpacity>
-
                                             <TouchableOpacity
                                                 style={{
                                                     backgroundColor: 'white', // Assuming 'bg-gray-500' corresponds to gray-500
@@ -160,7 +157,6 @@ const HelpHome = () => {
                                                 <Text style={{ color: '#272829', fontFamily: 'Roboto-Bold' }}>Cancel</Text>
                                             </TouchableOpacity>
                                         </View>
-
                                     </>
                                 )}
                             </View>

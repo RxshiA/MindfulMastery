@@ -4,11 +4,13 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Toast from 'react-native-toast-message';
 import { FIREBASE_DB } from '../../FirebaseConfig';
 import { collection, addDoc } from 'firebase/firestore';
+import { useNavigation } from '@react-navigation/native';
 
 const NewJournal = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState('');
   const [description, setDescription] = useState('');
+  const navigation = useNavigation();
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -39,6 +41,9 @@ const NewJournal = () => {
         text1: 'Journal Saved!',
         visibilityTime: 3000,
         autoHide: true,
+        onHide: () => {
+          navigation.navigate('Journal');
+        },
       });
     } catch (error) {
       console.error('Error saving journal:', error);
@@ -53,50 +58,55 @@ const NewJournal = () => {
   };
 
   return (
-    <View className='flex-1 justify-center items-center p-4'>
+    <View style={{ flex: 1, justifyContent: 'center', padding: 10 }}>
+      {/* Container with Light Blue Background */}
+
       {/* Beautiful Header */}
-      <View className='mb-8'>
-        <Image source={require('../../assets/mountains.jpeg')} className='w-54 h-24' />
-        <Text className='text-2xl font-bold mt-4'>New Journal</Text>
+      <View style={{ marginBottom: 8, marginLeft: 10 }}>
+        <Text style={{ fontSize: 20, fontFamily: 'Hind-Bold', marginTop: 4, color: '#7CB1D1' }}>JOURNAL ENTRY</Text>
       </View>
 
-      {/* Date Picker */}
-      <TouchableOpacity onPress={showDatePicker} className='bg-blue-500 p-2 rounded mb-4'>
-        <Text className='text-white'>Select Date</Text>
-      </TouchableOpacity>
-      <Text className='text-lg'>{selectedDate}</Text>
-      <DateTimePickerModal
-        isVisible={isDatePickerVisible}
-        mode='date'
-        onConfirm={handleConfirm}
-        onCancel={hideDatePicker}
-      />
+      <View style={{ backgroundColor: '#E1F2F9', borderRadius: 20, padding: 20, width: '100%', height: '85%' }}>
 
-      {/* Description Input */}
-      <TextInput
-        placeholder='Enter Description...'
-        value={description}
-        onChangeText={(text) => setDescription(text)}
-        multiline
-        style={{
-          borderWidth: 1,
-          borderColor: 'gray',
-          borderRadius: 8,
-          padding: 8,
-          height: 100,
-          width: '100%',
-          marginBottom: 16,
-        }}
-      />
+        {/* Date Picker */}
+        <TouchableOpacity onPress={showDatePicker} style={{ padding: 10, borderRadius: 4, marginBottom: 8 }}>
+          <Text style={{ color: 'black' }}>Select Date</Text>
+        </TouchableOpacity>
+        <Text style={{ fontSize: 16, marginBottom: 8 }}>{selectedDate}</Text>
+        <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode='date'
+          onConfirm={handleConfirm}
+          onCancel={hideDatePicker}
+        />
 
-      {/* Save Button */}
-      <TouchableOpacity onPress={handleSave} className='bg-green-500 p-3 rounded'>
-        <Text className='text-white'>Save Journal</Text>
-      </TouchableOpacity>
+        {/* Description Input */}
+        <TextInput
+          placeholder='Enter Description...'
+          value={description}
+          onChangeText={(text) => setDescription(text)}
+          multiline
+          style={{
+            borderWidth: 1,
+            borderColor: 'gray',
+            borderRadius: 8,
+            padding: 8,
+            height: '70%',
+            width: '100%',
+            marginBottom: 36,
+          }}
+        />
 
-      {/* Toast Messages */}
-      <Toast ref={(ref) => Toast.setRef(ref)} />
+        {/* Save Button */}
+        <TouchableOpacity onPress={handleSave} style={{ backgroundColor: '#7CB1D1', padding: 10, borderRadius: 4, marginBottom: 8 }}>
+          <Text style={{ color: 'white' }}>Save Journal</Text>
+        </TouchableOpacity>
+
+        {/* Toast Messages */}
+        <Toast ref={(ref) => Toast.setRef(ref)} />
+      </View>
     </View>
+
   );
 };
 

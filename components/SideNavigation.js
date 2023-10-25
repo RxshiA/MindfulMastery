@@ -37,7 +37,9 @@ const SideNavigation = () => {
       <TouchableOpacity onPress={() => navigateToScreen('Tranquil')}>
         <Text style={{ fontSize: 18, marginBottom: 10, fontFamily:'EBGaramond-Regular' }}>Tranquil</Text>
       </TouchableOpacity>
-
+      <TouchableOpacity onPress={() => navigateToScreen('Practice')}>
+        <Text style={{ fontSize: 18, marginBottom: 10, fontFamily:'EBGaramond-Regular' }}>Mindfulness Practice</Text>
+      </TouchableOpacity>
       {/* Image at the bottom */}
       <Image
         source={require('../assets/greenMount.png')}

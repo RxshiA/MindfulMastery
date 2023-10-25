@@ -15,6 +15,7 @@ import VisHome from '../Visualisations/VisHome';
 import JournalHome from '../Journal/JournalHome';
 import Pomodoro from '../Pomodoro/Pomodoro';
 import TranquilStart from '../Tranquil/TranquilStart';
+import PracticeScreen from '../PracticeScreen';
 
 const HomeScreenContent = ({ navigation }) => {
   const [schedule, setSchedule] = useState([]);
@@ -484,6 +485,7 @@ const HomeScreen = () => {
       <Drawer.Screen name="Journal" component={JournalHome} />
       <Drawer.Screen name="Pomodoro" component={Pomodoro} />
       <Drawer.Screen name="Tranquil" component={TranquilStart} />
+      <Drawer.Screen name="Practice" component={PracticeScreen} />
     </Drawer.Navigator>
   );
 };

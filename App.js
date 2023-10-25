@@ -70,6 +70,8 @@ export default function App() {
     'EBGaramond-MediumItalic': require('./assets/fonts/EBGaramond-MediumItalic.ttf'),
     'Archivo-SemiBold': require('./assets/fonts/Archivo-SemiBold.ttf'),
     'KantumruyPro-Regular': require('./assets/fonts/KantumruyPro-Regular.ttf'),
+    'Hind-Bold': require('./assets/fonts/Hind-Bold.ttf'),
+    'Hind-Medium': require('./assets/fonts/Hind-Medium.ttf'),
   });
 
   return (
