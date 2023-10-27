@@ -1,16 +1,45 @@
-import React, { useState } from 'react';
-import { View, Text, Image, Modal, TextInput, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
-import { FIREBASE_DB } from '../../FirebaseConfig';
-import { collection, addDoc } from 'firebase/firestore';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  Image,
+  Modal,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
+import { Picker } from "@react-native-picker/picker";
+import { FIREBASE_DB } from "../../FirebaseConfig";
+import {
+  collection,
+  getDocs,
+  getDoc,
+  setDoc,
+  addDoc,
+  deleteDoc,
+  doc,
+  updateDoc,
+  query,
+  where,
+  onSnapshot,
+} from "firebase/firestore";
+import ProgressBar from "../../components/ProgressBar";
 
-const emotionsList = ['Happy', 'Sad', 'Fear', 'Loneliness', 'Joy', 'Anger'];
+const emotionsList = ["Happy", "Sad", "Fear", "Loneliness", "Joy", "Anger"];
 
 const VisHome = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedEmotion, setSelectedEmotion] = useState('Happy');
+  const [selectedEmotion, setSelectedEmotion] = useState("Happy");
   const [emotionValue, setEmotionValue] = useState(5);
-  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedDate, setSelectedDate] = useState("");
+  const [emoArr, setEmoArr] = useState([0.1, 0.9, 0.3]);
+  // const [happy, setHappy] = useState();
+  // const [sad, setSad] = useState();
+  // const [fear, setFear] = useState();
+  // const [lonliness, setLonliness] = useState();
+  // const [joy, setJoy] = useState();
+  // const [anger, setAnger] = useState();
 
   const handleAddEmotions = () => {
     setModalVisible(true);
@@ -18,7 +47,7 @@ const VisHome = () => {
 
   const handleSaveEmotions = async () => {
     try {
-      const emotionsCollection = collection(FIREBASE_DB, 'emotions');
+      const emotionsCollection = collection(FIREBASE_DB, "emotions");
       await addDoc(emotionsCollection, {
         emotion: selectedEmotion,
         value: emotionValue,
@@ -27,7 +56,7 @@ const VisHome = () => {
 
       setModalVisible(false);
     } catch (error) {
-      console.error('Error saving emotions:', error);
+      console.error("Error saving emotions:", error);
     }
   };
 
@@ -35,18 +64,82 @@ const VisHome = () => {
     setModalVisible(false);
   };
 
+  // useEffect(() => {
+  //   const fetchSchedule = async () => {
+  //     try {
+  //       const emotionCollection = collection(FIREBASE_DB, "emotions");
+  //       emotionsList.map(async (emotion) => {
+  //         const q = query(emotionCollection, where("emotion", "==", emotion));
+  //         const querySnapshot = await getDocs(q);
+  //         emoArr.append(querySnapshot.size)
+  //       });
+  //     } catch (error) {
+  //       console.error("Error fetching schedule:", error);
+  //     }
+  //   };
+
+  //   fetchSchedule();
+  // }, []);
+
+  useEffect(() => {
+    const emotionCollection = collection(FIREBASE_DB, "emotions");
+
+    // Create a listener for the entire collection
+    const unsubscribe = onSnapshot(emotionCollection, async () => {
+      try {
+        // Clear emoArr before updating it with the new data
+        setEmoArr([]);
+
+        const newEmoArr = await Promise.all(
+          emotionsList.map(async (emotion) => {
+            const q = query(emotionCollection, where("emotion", "==", emotion));
+            const querySnapshot = await getDocs(q);
+            return querySnapshot.size;
+          })
+        );
+
+        setEmoArr(newEmoArr);
+      } catch (error) {
+        console.error("Error fetching schedule:", error);
+      }
+    });
+    console.log(emoArr);
+    // Cleanup the listener when the component unmounts
+    // return () => {
+    //   unsubscribe();
+    // };
+  }, []);
+
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.contentContainer}
+    >
       {/* Title */}
-      <Text style={{ fontSize: 24, fontFamily: 'AbhayaLibre-ExtraBold', marginBottom: 20 }}>Progress</Text>
+      <Text
+        style={{
+          fontSize: 24,
+          fontFamily: "AbhayaLibre-ExtraBold",
+          marginBottom: 20,
+        }}
+      >
+        Progress
+      </Text>
 
       {/* Images with Spacing */}
-      <View style={styles.imageContainer}>
+      {/* <View style={styles.imageContainer}>
         <Image source={require('../../assets/card1.png')} />
       </View>
       <View style={styles.imageContainer}>
         <Image source={require('../../assets/card2.png')} />
-      </View>
+      </View> */}
+
+      {emoArr.map((item,index) => (
+        <View>
+          <Text>{emotionsList[index]}</Text>
+          <ProgressBar value={item / 10} />
+        </View>
+      ))}
 
       {/* Modal for Adding Emotions */}
       <Modal
@@ -57,9 +150,23 @@ const VisHome = () => {
           setModalVisible(!modalVisible);
         }}
       >
-        <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0, 0, 0, 0.5)', marginBottom: -95 }}>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <View style={{ backgroundColor: 'white', padding: 26, borderRadius: 15}}>
+        <View
+          style={{
+            ...StyleSheet.absoluteFillObject,
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            marginBottom: -95,
+          }}
+        >
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <View
+              style={{
+                backgroundColor: "white",
+                padding: 26,
+                borderRadius: 15,
+              }}
+            >
               <Text style={styles.modalTitle}>Today's Emotions</Text>
 
               {/* Date Input */}
@@ -74,7 +181,9 @@ const VisHome = () => {
               <Text style={styles.label}>Emotion:</Text>
               <Picker
                 selectedValue={selectedEmotion}
-                onValueChange={(itemValue, itemIndex) => setSelectedEmotion(itemValue)}
+                onValueChange={(itemValue, itemIndex) =>
+                  setSelectedEmotion(itemValue)
+                }
                 style={styles.picker}
               >
                 {emotionsList.map((emotion, index) => (
@@ -94,10 +203,16 @@ const VisHome = () => {
 
               {/* Save and Cancel Buttons */}
               <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.saveButton} onPress={handleSaveEmotions}>
+                <TouchableOpacity
+                  style={styles.saveButton}
+                  onPress={handleSaveEmotions}
+                >
                   <Text style={styles.buttonText}>Save</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.cancelButton} onPress={handleCancelEmotions}>
+                <TouchableOpacity
+                  style={styles.cancelButton}
+                  onPress={handleCancelEmotions}
+                >
                   <Text style={styles.buttonText}>Cancel</Text>
                 </TouchableOpacity>
               </View>
@@ -119,8 +234,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingVertical: 20,
   },
   imageContainer: {
@@ -128,18 +243,18 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     padding: 20,
     borderRadius: 10,
     width: 300,
   },
   modalTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
   input: {
@@ -154,33 +269,33 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   saveButton: {
-    backgroundColor: 'blue',
+    backgroundColor: "blue",
     padding: 10,
     borderRadius: 5,
     flex: 1,
     marginRight: 5,
   },
   cancelButton: {
-    backgroundColor: 'red',
+    backgroundColor: "red",
     padding: 10,
     borderRadius: 5,
     flex: 1,
     marginLeft: 5,
   },
   addButton: {
-    backgroundColor: 'black',
+    backgroundColor: "black",
     padding: 15,
     borderRadius: 5,
     margin: 20,
-    paddingHorizontal: 110
+    paddingHorizontal: 110,
   },
   buttonText: {
-    color: 'white',
-    textAlign: 'center',
+    color: "white",
+    textAlign: "center",
   },
 });
 
