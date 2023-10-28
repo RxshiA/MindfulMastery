@@ -29,7 +29,7 @@ const Group = () => {
         if (action === 'whatsapp') {
             Linking.openURL('https://web.whatsapp.com/');
         } else if (action === 'join') {
-            navigation.navigate('Chat');
+            navigation.navigate('Chat', { groupId });
         }
 
         setJoinChatPopupVisible(false);
