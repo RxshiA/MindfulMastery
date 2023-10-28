@@ -25,6 +25,7 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import ProgressBar from "../../components/ProgressBar";
+import PieChart from "react-native-pie-chart";
 
 const emotionsList = ["Happy", "Sad", "Fear", "Loneliness", "Joy", "Anger"];
 
@@ -33,7 +34,7 @@ const VisHome = () => {
   const [selectedEmotion, setSelectedEmotion] = useState("Happy");
   const [emotionValue, setEmotionValue] = useState(5);
   const [selectedDate, setSelectedDate] = useState("");
-  const [emoArr, setEmoArr] = useState([0.1, 0.9, 0.3]);
+  const [emoArr, setEmoArr] = useState([]);
   // const [happy, setHappy] = useState();
   // const [sad, setSad] = useState();
   // const [fear, setFear] = useState();
@@ -80,6 +81,18 @@ const VisHome = () => {
 
   //   fetchSchedule();
   // }, []);
+
+  //pie chart
+  const widthAndHeight = 250;
+  const series = emoArr;
+  const sliceColor = [
+    "#0000ff",
+    "#0044ff",
+    "#0066ff",
+    "#3388ff",
+    "#55aaff",
+    "#77ccff",
+  ];
 
   useEffect(() => {
     const emotionCollection = collection(FIREBASE_DB, "emotions");
@@ -133,13 +146,34 @@ const VisHome = () => {
       <View style={styles.imageContainer}>
         <Image source={require('../../assets/card2.png')} />
       </View> */}
+      {emoArr.length === 0 ? (
+        emoArr.map((item, index) => (
+          <View>
+            <Text>{emotionsList[index]}</Text>
+            <ProgressBar value={item / 10} />
+          </View>
+        ))
+      ) : (
+        <View style={{ alignItems: "center" }}>
+  <PieChart widthAndHeight={widthAndHeight} series={series} sliceColor={sliceColor} style={{ marginBottom: 20 }} />
+  <View style={{ width: "80%" }}>
+    {emoArr.map((item, index) => (
+      <View key={index} style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+        <Text>{emotionsList[index]}</Text>
+        <View
+          style={{
+            width: 20,
+            height: 20,
+            backgroundColor: sliceColor[index],
+            marginLeft: 5,
+          }}
+        />
+      </View>
+    ))}
+  </View>
+</View>
 
-      {emoArr.map((item,index) => (
-        <View>
-          <Text>{emotionsList[index]}</Text>
-          <ProgressBar value={item / 10} />
-        </View>
-      ))}
+      )}
 
       {/* Modal for Adding Emotions */}
       <Modal
