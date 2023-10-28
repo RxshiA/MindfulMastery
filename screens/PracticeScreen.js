@@ -70,7 +70,7 @@ const PracticeScreen = () => {
                     borderRadius: 8,
                     marginBottom: 16,
                     paddingHorizontal: 8,
-                    color: 'white',
+                    color: 'black',
                 }}
                 placeholder="Search"
                 placeholderTextColor="#999"
